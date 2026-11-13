@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tobacco Word Scramble</title><style>
+:root{--navy:#17324d;--blue:#176b9a;--teal:#168b83;--gold:#f2b84b;--ink:#203040;--muted:#607386;--paper:#f3f7fa;--good:#e8f6ee;--bad:#fff0ed}
+*{box-sizing:border-box}body{margin:0;padding:20px;background:var(--paper);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+main{max-width:900px;margin:0 auto;background:#fff;border-radius:18px;padding:26px;box-shadow:0 8px 28px #17324d12}
+h1{margin:0 0 8px;color:var(--navy);font-size:clamp(26px,4vw,36px)}.intro{color:var(--muted);line-height:1.5}
+button,input{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:11px 16px;background:var(--navy);color:white;font-weight:700}
+button.secondary{background:#e7eef4;color:var(--navy)}button:disabled{opacity:.5;cursor:default}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}.stat{background:#edf3f7;border-radius:10px;padding:10px 14px;font-weight:700}
+.feedback{min-height:48px;margin:16px 0;padding:12px 14px;border-radius:10px;background:#edf3f7;line-height:1.45}.good{background:var(--good)}.bad{background:var(--bad)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.pill{display:inline-block;border-radius:99px;background:#e7f2f7;padding:5px 10px;color:var(--navy);font-size:13px;font-weight:700}
+small{color:var(--muted)}@media(max-width:560px){body{padding:10px}main{padding:18px}}
+
+.letters{font-size:clamp(30px,7vw,48px);letter-spacing:.16em;font-weight:800;color:var(--blue);text-align:center;padding:20px;background:#f3f8fb;border-radius:14px;margin:18px 0}
+input{width:100%;max-width:480px;padding:14px;border:2px solid #cbd9e2;border-radius:10px;font-size:20px;text-transform:uppercase}
+.center{text-align:center}.hint{color:var(--muted);margin:12px 0}
+</style></head><body><main>
+<h1>🔤 Tobacco Word Scramble</h1>
+<p class="intro">Unscramble each word related to tobacco facts, health, and prevention. Enter your answer and check it!</p>
+<div class="stats"><div class="stat" id="progress">Word 1 of 10</div><div class="stat" id="score">Score: 0</div></div>
+<div class="pill">Unscramble this word</div>
+<div class="letters" id="scramble" aria-label="Scrambled letters"></div>
+<div class="center"><p class="hint" id="hint"></p>
+<input id="answer" autocomplete="off" placeholder="Type your answer" aria-label="Your answer">
+<div class="actions" style="justify-content:center">
+<button id="check">Check answer</button><button class="secondary" id="reveal">Show answer</button>
+<button class="secondary" id="next" disabled>Next word</button>
+</div></div>
+<div class="feedback" id="feedback" aria-live="polite">You earn one point for each correct answer on your first try.</div>
+<p><small>Customize the word list in the JavaScript section of this file. Answers are not case-sensitive.</small></p>
+</main><script>
+/* CUSTOMIZE: Change each word and hint. Keep answers uppercase and avoid spaces for this version. */
+const words=[
+{word:"NICOTINE",hint:"An addictive substance found in tobacco and many e-cigarettes."},
+{word:"AEROSOL",hint:"The mist produced by an e-cigarette; it is not simply water vapor."},
+{word:"TOBACCO",hint:"The plant used in products such as cigarettes and some cigars."},
+{word:"HEALTH",hint:"Something worth protecting through informed choices."},
+{word:"ADDICTION",hint:"A condition involving difficulty stopping use of a substance."},
+{word:"PREVENTION",hint:"Actions taken to reduce the chance of harm before it happens."},
+{word:"FACTCHECK",hint:"The process of checking a claim against reliable evidence."},
+{word:"QUITLINE",hint:"A phone-based service that can help people who want to quit."},
+{word:"SECONDHAND",hint:"Describes smoke exposure experienced by people nearby."},
+{word:"MISINFORMATION",hint:"False or misleading information, whether shared intentionally or not."}
+];
+let index=0,score=0,locked=false,firstTry=true;
+const $=id=>document.getElementById(id);
+function mix(word){let a=word.split("");for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}if(a.join("")===word) a.push(a.shift());return a.join(" ")}
+function render(){locked=false;firstTry=true;$("progress").textContent=`Word ${index+1} of ${words.length}`;$("score").textContent=`Score: ${score}`;$("scramble").textContent=mix(words[index].word);$("hint").textContent="Hint: "+words[index].hint;$("answer").value="";$("answer").disabled=false;$("check").disabled=false;$("reveal").disabled=false;$("next").disabled=true;$("feedback").className="feedback";$("feedback").textContent="Enter the unscrambled word.";$("answer").focus()}
+function check(){if(locked)return;let val=$("answer").value.trim().toUpperCase().replace(/[^A-Z]/g,"");if(!val){$("feedback").textContent="Type an answer first.";return}if(val===words[index].word){if(firstTry)score++;locked=true;$("feedback").className="feedback good";$("feedback").textContent="Correct! "+words[index].word+" — "+words[index].hint;$("next").disabled=false;$("check").disabled=true;$("answer").disabled=true;$("score").textContent=`Score: ${score}`}else{firstTry=false;$("feedback").className="feedback bad";$("feedback").textContent="Not quite. Try rearranging the letters."}}
+$("check").onclick=check;$("answer").addEventListener("keydown",e=>{if(e.key==="Enter")check()});$("reveal").onclick=()=>{locked=true;$("feedback").className="feedback";$("feedback").textContent="The answer is "+words[index].word+". "+words[index].hint;$("answer").value=words[index].word;$("answer").disabled=true;$("check").disabled=true;$("next").disabled=false};$("next").onclick=()=>{if(index<words.length-1){index++;render()}else{$("scramble").textContent="🎉";$("hint").textContent="Challenge complete!";$("feedback").className="feedback good";$("feedback").textContent=`You scored ${score} out of ${words.length}. Restart the page to play again.`;$("next").disabled=true;$("check").disabled=true;$("reveal").disabled=true}};render();
+</script></body></html>
