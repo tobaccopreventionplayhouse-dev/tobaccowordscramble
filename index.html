@@ -1,52 +1,78 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tobacco Word Scramble</title><style>
-:root{--navy:#17324d;--blue:#176b9a;--teal:#168b83;--gold:#f2b84b;--ink:#203040;--muted:#607386;--paper:#f3f7fa;--good:#e8f6ee;--bad:#fff0ed}
-*{box-sizing:border-box}body{margin:0;padding:20px;background:var(--paper);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
-main{max-width:900px;margin:0 auto;background:#fff;border-radius:18px;padding:26px;box-shadow:0 8px 28px #17324d12}
-h1{margin:0 0 8px;color:var(--navy);font-size:clamp(26px,4vw,36px)}.intro{color:var(--muted);line-height:1.5}
-button,input{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:11px 16px;background:var(--navy);color:white;font-weight:700}
-button.secondary{background:#e7eef4;color:var(--navy)}button:disabled{opacity:.5;cursor:default}
-.stats{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}.stat{background:#edf3f7;border-radius:10px;padding:10px 14px;font-weight:700}
-.feedback{min-height:48px;margin:16px 0;padding:12px 14px;border-radius:10px;background:#edf3f7;line-height:1.45}.good{background:var(--good)}.bad{background:var(--bad)}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.pill{display:inline-block;border-radius:99px;background:#e7f2f7;padding:5px 10px;color:var(--navy);font-size:13px;font-weight:700}
-small{color:var(--muted)}@media(max-width:560px){body{padding:10px}main{padding:18px}}
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#132d4a"><title>Tobacco Word Scramble | Tobacco-Free Arcade</title>
+<style>:root{color-scheme:light;--ink:#18324b;--muted:#5b6f82;--blue:#2478c5;--teal:#079e96;--coral:#ff6f83;--gold:#ffc857;--violet:#8068d8;--sky:#eaf6ff;--line:#d9e6f0;--shadow:0 16px 42px #16355218}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:ui-rounded,"Avenir Next",system-ui,sans-serif;color:var(--ink);background:radial-gradient(circle at 8% 5%,#fff2c9 0,transparent 25rem),radial-gradient(circle at 95% 15%,#e7ddff 0,transparent 28rem),linear-gradient(145deg,#eaf7ff,#fff7f8)}
+button, input{font:inherit}
+button{cursor:pointer;touch-action:manipulation}
+button:focus-visible, input:focus-visible{outline:3px solid #142f4c;outline-offset:3px}
+header{background:linear-gradient(115deg,#132d4a,#205b86);color:white;padding:25px 18px 30px;text-align:center;position:relative;overflow:hidden}
+header:before, header:after{content:"";position:absolute;border-radius:50%;background:#ffffff0d;width:230px;height:230px;top:-145px}
+header:before{left:8%}
+header:after{right:8%}
+h1{margin:0;font-size:clamp(1.8rem,5vw,2.8rem);letter-spacing:-.04em}
+header p{margin:8px 0 0;color:#d7eaff}
+.top-tools{position:absolute;right:16px;top:14px;display:flex;gap:8px}
+.tool{background:#ffffff1c;color:white;border:1px solid #ffffff55;border-radius:99px;padding:8px 12px;font-weight:750;font-size:.88rem}
+main{max-width:1080px;margin:25px auto;padding:0 16px 44px}
+.panel{background:#ffffffed;border:1px solid #ffffff;border-radius:24px;padding:clamp(17px,4vw,30px);box-shadow:var(--shadow);min-height:470px}
+.head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.head h2{margin:0;color:#163b5c;font-size:clamp(1.4rem,3vw,1.9rem)}
+.scorebar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{background:#e6f7f4;color:#08776f;padding:8px 13px;border-radius:99px;font-size:.92rem;font-weight:850}
+.streak{background:#fff2d7;color:#885b00}
+.instructions{color:var(--muted);margin:9px 0 19px;line-height:1.5}
+.stage{position:relative;min-height:295px;border-radius:20px;padding:clamp(16px,3vw,25px);background:linear-gradient(140deg,#eff8ff,#f7f2ff);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+.stage:before{content:"";position:absolute;width:190px;height:190px;border-radius:50%;background:#fff9;top:-130px;right:-65px}
+.stage>*{position:relative}
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:17px}
+.btn{border:0;border-radius:13px;padding:12px 18px;font-weight:850;box-shadow:0 4px 0 #00000013;transition:transform .16s,filter .16s}
+.btn:hover{filter:brightness(1.04);transform:translateY(-2px)}
+.btn:active{transform:translateY(1px);box-shadow:none}
+.primary{background:linear-gradient(120deg,#079e96,#18b6a6);color:white}
+.blue{background:linear-gradient(120deg,#2478c5,#469ee1);color:white}
+.soft{background:#e9f0f6;color:#25435d}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.feedback{min-height:46px;max-width:720px;margin:14px auto 0;font-weight:750;line-height:1.45}
 
-.letters{font-size:clamp(30px,7vw,48px);letter-spacing:.16em;font-weight:800;color:var(--blue);text-align:center;padding:20px;background:#f3f8fb;border-radius:14px;margin:18px 0}
-input{width:100%;max-width:480px;padding:14px;border:2px solid #cbd9e2;border-radius:10px;font-size:20px;text-transform:uppercase}
-.center{text-align:center}.hint{color:var(--muted);margin:12px 0}
-</style></head><body><main>
-<h1>🔤 Tobacco Word Scramble</h1>
-<p class="intro">Unscramble each word related to tobacco facts, health, and prevention. Enter your answer and check it!</p>
-<div class="stats"><div class="stat" id="progress">Word 1 of 10</div><div class="stat" id="score">Score: 0</div></div>
-<div class="pill">Unscramble this word</div>
-<div class="letters" id="scramble" aria-label="Scrambled letters"></div>
-<div class="center"><p class="hint" id="hint"></p>
-<input id="answer" autocomplete="off" placeholder="Type your answer" aria-label="Your answer">
-<div class="actions" style="justify-content:center">
-<button id="check">Check answer</button><button class="secondary" id="reveal">Show answer</button>
-<button class="secondary" id="next" disabled>Next word</button>
-</div></div>
-<div class="feedback" id="feedback" aria-live="polite">You earn one point for each correct answer on your first try.</div>
-<p><small>Customize the word list in the JavaScript section of this file. Answers are not case-sensitive.</small></p>
-</main><script>
-/* CUSTOMIZE: Change each word and hint. Keep answers uppercase and avoid spaces for this version. */
-const words=[
-{word:"NICOTINE",hint:"An addictive substance found in tobacco and many e-cigarettes."},
-{word:"AEROSOL",hint:"The mist produced by an e-cigarette; it is not simply water vapor."},
-{word:"TOBACCO",hint:"The plant used in products such as cigarettes and some cigars."},
-{word:"HEALTH",hint:"Something worth protecting through informed choices."},
-{word:"ADDICTION",hint:"A condition involving difficulty stopping use of a substance."},
-{word:"PREVENTION",hint:"Actions taken to reduce the chance of harm before it happens."},
-{word:"FACTCHECK",hint:"The process of checking a claim against reliable evidence."},
-{word:"QUITLINE",hint:"A phone-based service that can help people who want to quit."},
-{word:"SECONDHAND",hint:"Describes smoke exposure experienced by people nearby."},
-{word:"MISINFORMATION",hint:"False or misleading information, whether shared intentionally or not."}
-];
-let index=0,score=0,locked=false,firstTry=true;
+
+
+.case-label{font-size:.8rem;text-transform:uppercase;letter-spacing:.14em;color:#8068d8;font-weight:900;margin-bottom:10px}
+.scramble{font-size:clamp(1.9rem,6vw,3rem);letter-spacing:.16em;font-weight:950;color:#216eb3;background:#fff;border:2px solid #d9eafa;border-radius:16px;padding:13px 22px;margin:13px 0;box-shadow:0 6px 18px #1e619a12}
+.answer{width:min(100%,420px);padding:14px 16px;border:2px solid #c8d9e7;border-radius:13px;font-size:1.1rem;text-align:center;background:#fff;color:var(--ink)}
+.hint{color:#5b6f82;max-width:620px;line-height:1.45}
+.tiny{font-size:.85rem;color:#6d8193}
+@media (max-width:680px){.top-tools{position:static;justify-content:center;margin-bottom:10px}.panel{min-height:0}.stage{min-height:320px}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}</style></head><body>
+<header><div class="top-tools"><button class="tool" id="soundToggle" type="button" aria-pressed="false">🔊 Sound on</button></div><h1>Tobacco Word Scramble</h1><p>🔤 Unscramble words about health and tobacco prevention.</p></header>
+<main class="single-game"><section class="panel" id="scramble" role="tabpanel" aria-labelledby="tab-scramble">
+  <div class="head"><h2>🔤 Tobacco Word Scramble</h2><div class="scorebar"><span class="pill">Solved: <b id="scrambleScore">0</b></span><span class="pill streak">Streak: <b id="wordStreak">0</b></span></div></div>
+  <p class="instructions">Unscramble a word about tobacco prevention, health, and positive choices. New words are dealt without repeats until you've played the whole deck.</p>
+  <div class="stage"><div class="case-label">🧠 Word puzzle</div><div class="scramble" id="scrambledWord" aria-label="Scrambled letters"></div><p class="hint" id="scrambleHint"></p><label class="tiny" for="wordAnswer">Your answer</label><input class="answer" id="wordAnswer" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Type the word here"><p class="feedback" id="scrambleFeedback" aria-live="polite"></p></div>
+  <div class="actions"><button class="btn primary" id="wordCheck">Check answer</button><button class="btn blue" id="wordNext">New word</button><button class="btn soft" id="wordReset">↻ Reset score</button></div>
+ </section></main>
+<script>
 const $=id=>document.getElementById(id);
-function mix(word){let a=word.split("");for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}if(a.join("")===word) a.push(a.shift());return a.join(" ")}
-function render(){locked=false;firstTry=true;$("progress").textContent=`Word ${index+1} of ${words.length}`;$("score").textContent=`Score: ${score}`;$("scramble").textContent=mix(words[index].word);$("hint").textContent="Hint: "+words[index].hint;$("answer").value="";$("answer").disabled=false;$("check").disabled=false;$("reveal").disabled=false;$("next").disabled=true;$("feedback").className="feedback";$("feedback").textContent="Enter the unscrambled word.";$("answer").focus()}
-function check(){if(locked)return;let val=$("answer").value.trim().toUpperCase().replace(/[^A-Z]/g,"");if(!val){$("feedback").textContent="Type an answer first.";return}if(val===words[index].word){if(firstTry)score++;locked=true;$("feedback").className="feedback good";$("feedback").textContent="Correct! "+words[index].word+" — "+words[index].hint;$("next").disabled=false;$("check").disabled=true;$("answer").disabled=true;$("score").textContent=`Score: ${score}`}else{firstTry=false;$("feedback").className="feedback bad";$("feedback").textContent="Not quite. Try rearranging the letters."}}
-$("check").onclick=check;$("answer").addEventListener("keydown",e=>{if(e.key==="Enter")check()});$("reveal").onclick=()=>{locked=true;$("feedback").className="feedback";$("feedback").textContent="The answer is "+words[index].word+". "+words[index].hint;$("answer").value=words[index].word;$("answer").disabled=true;$("check").disabled=true;$("next").disabled=false};$("next").onclick=()=>{if(index<words.length-1){index++;render()}else{$("scramble").textContent="🎉";$("hint").textContent="Challenge complete!";$("feedback").className="feedback good";$("feedback").textContent=`You scored ${score} out of ${words.length}. Restart the page to play again.`;$("next").disabled=true;$("check").disabled=true;$("reveal").disabled=true}};render();
+const shuffle=list=>{const a=[...list];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+
+
+let soundOn=true,audioCtx=null;
+function sound(kind="tap"){
+ if(!soundOn)return;
+ try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;audioCtx=audioCtx||new C();if(audioCtx.state==="suspended")audioCtx.resume();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);const now=audioCtx.currentTime;const cfg=kind==="good"?[660,.16]:kind==="bad"?[180,.2]:kind==="pop"?[520,.08]:[420,.06];o.type=kind==="good"?"sine":"triangle";o.frequency.setValueAtTime(cfg[0],now);if(kind==="good")o.frequency.exponentialRampToValueAtTime(990,now+.12);g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.11,now+.012);g.gain.exponentialRampToValueAtTime(.0001,now+cfg[1]);o.start(now);o.stop(now+cfg[1]+.02)}catch(e){}
+}
+$("soundToggle").addEventListener("click",()=>{soundOn=!soundOn;$("soundToggle").textContent=soundOn?"🔊 Sound on":"🔇 Sound off";$("soundToggle").setAttribute("aria-pressed",String(!soundOn));if(soundOn)sound("good")});
+function feedback(id,msg,type="neutral"){const el=$(id);el.textContent=msg;el.className="feedback "+type}
+
+let scrambleScore=0,wordStreak=0,wordDeck=[],currentWord=null,wordSolved=false;
+const wordDeckSource=[
+["NICOTINE","The addictive substance found in many tobacco and nicotine products."],["LUNGS","Organs that help you breathe and can be harmed by tobacco smoke."],["HEALTH","What you protect by choosing to stay tobacco-free."],["CHOICE","A decision you make for yourself."],["AEROSOL","The mist released by e-cigarettes; it is not simply water vapor."],["QUITTING","The process of stopping tobacco use."],["SECONDHAND","Describes smoke breathed in from someone else's tobacco use."],["ADDICTION","A condition involving difficulty stopping use of a substance."],["PREVENTION","Actions taken to stop a problem before it starts."],["SUPPORT","Help from friends, family, or trained professionals."],["TOBACCO","The plant used in products such as cigarettes."],["BREATHE","What your lungs help you do."],["CHEMICALS","Substances that can be found in tobacco smoke and aerosol."],["RESOURCES","Helpful services or information for people who want to quit."],["WELLNESS","A state of health and well-being."],["CHOICES","Decisions that can support a healthy future."],["AIRWAYS","Passages that carry air into and out of your lungs."],["SMOKELESS","A word used for some tobacco products that are not smoked; they are still harmful."],["HEART","An organ that tobacco use can harm."],["FACTS","Information that can be checked and supported by evidence."]
+];
+function scrambledLetters(word){let letters=word.split(""),mixed;do{mixed=shuffle(letters).join("")}while(mixed===word&&word.length>1);return mixed}
+function nextWord(){if(!wordDeck.length)wordDeck=shuffle(wordDeckSource);currentWord=wordDeck.pop();wordSolved=false;$("scrambledWord").textContent=scrambledLetters(currentWord[0]);$("scrambleHint").textContent="Hint: "+currentWord[1];$("wordAnswer").value="";$("wordAnswer").disabled=false;$("wordCheck").disabled=false;feedback("scrambleFeedback","Take your time—you can try more than once.");}
+function checkWord(){if(!currentWord||wordSolved)return;const guess=$("wordAnswer").value.trim().toUpperCase().replace(/[^A-Z]/g,"");if(!guess){feedback("scrambleFeedback","Type a guess first.");return}if(guess===currentWord[0]){wordSolved=true;scrambleScore++;wordStreak++;$("scrambleScore").textContent=scrambleScore;$("wordStreak").textContent=wordStreak;$("wordAnswer").disabled=true;$("wordCheck").disabled=true;feedback("scrambleFeedback","🌟 Correct! "+currentWord[0]+" — great work. Choose New word to continue.","good");sound("good")}else{wordStreak=0;$("wordStreak").textContent=wordStreak;feedback("scrambleFeedback","Not quite. Check the hint and try again!","bad");sound("bad")}}
+$("wordCheck").addEventListener("click",checkWord);$("wordAnswer").addEventListener("keydown",e=>{if(e.key==="Enter")checkWord()});
+$("wordNext").addEventListener("click",()=>{nextWord();sound("tap")});
+$("wordReset").addEventListener("click",()=>{scrambleScore=0;wordStreak=0;wordDeck=[];$("scrambleScore").textContent="0";$("wordStreak").textContent="0";nextWord();sound("tap")});
+nextWord();
 </script></body></html>
